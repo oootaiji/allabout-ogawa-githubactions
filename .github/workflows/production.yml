@@ -56,9 +56,9 @@ jobs:
         working-directory: src
       - name: build app - laravel env
         run: |
-          echo "export PRO_APP_KEY=${{ secrets.PRO_APP_KEY }}" >> $BASH_ENV
-          source $BASH_ENV
           envsubst < .env.prd > .env
+        env:
+            APP_KEY: ${{ secrets.PRO_APP_KEY }}
         working-directory: src
       - name: build app - cache composer install
         id: composer-cache
