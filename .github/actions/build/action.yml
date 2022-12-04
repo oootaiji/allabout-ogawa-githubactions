@@ -62,14 +62,14 @@ runs:
         key: composer-cache-v1-${{ hashFiles('src/composer.json') }}
         restore-keys: composer-cache-v1-
     - name: build app - composer install
-      if: ${{ inputs.COMPOSER_INSTALL_NO_DEV != "true" }} && steps.composer-cache.outputs.cache-hit != 'true'
+      if: inputs.COMPOSER_INSTALL_NO_DEV != 'true' && steps.composer-cache.outputs.cache-hit != 'true'
       run: |
         composer config discard-changes true
         composer install -n --prefer-dist
       shell: bash
       working-directory: src
     - name: build app - composer install --no-dev
-      if: ${{ inputs.COMPOSER_INSTALL_NO_DEV == "true" }}
+      if: inputs.COMPOSER_INSTALL_NO_DEV == 'true'
       run: |
         composer config discard-changes true
         composer install -n --prefer-dist --no-dev

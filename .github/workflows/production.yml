@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: build app for deploy
+      - name: build app for test
         uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
@@ -48,7 +48,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: build app for test
+      - name: build app for deploy
         uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
