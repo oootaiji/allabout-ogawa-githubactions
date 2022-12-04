@@ -10,7 +10,7 @@ jobs:
 
   test:
 
-  
+
     runs-on: ubuntu-20.04
 
 
@@ -92,7 +92,7 @@ jobs:
       - name: production test
         id: production-test
         run: |
-          if [ ! -d ./test-results ]; then mkdir ./test-results; fi
+          mkdir -p ./results
           ./vendor/bin/phpunit -d memory_limit=1G --stderr
       
 
