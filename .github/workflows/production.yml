@@ -22,7 +22,7 @@ jobs:
       - name: build app - checkout
         uses: actions/checkout@v3
       - name: build app
-        uses: ./.github/actions/build.yml
+        uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
@@ -49,7 +49,7 @@ jobs:
       - name: build app - checkout
         uses: actions/checkout@v3
       - name: build app
-        uses: ./.github/actions/build.yml
+        uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
