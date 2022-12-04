@@ -58,7 +58,7 @@ jobs:
         working-directory: src
       - name: build app - laravel env
         run: |
-          echo "APP_KEY=${{ secrets.PRO_APP_KEY }}" >> $GITHUB_ENV
+          echo "${{ secrets.PRO_APP_KEY }}"
           envsubst < .env.prd > .env
         working-directory: src
       - name: build app - cache composer install
