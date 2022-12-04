@@ -1,7 +1,6 @@
 name: production
 on: [push]
-env:
-    REPOSITORY_NAME: ${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}
+
 
 permissions:
     contents: read
@@ -73,7 +72,7 @@ jobs:
         uses: docker/setup-buildx-action@v2.2.1
       - name: setup docker env
         run: |
-            echo "${{ env.REPOSITORY_NAME }}"
+            echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_ENV
             echo "IMAGE_TAG=${{ github.sha }}-${{ github.run_number }}" >> $GITHUB_ENV
       - name: docker build and push
         uses: docker/build-push-action@v3.2.0
