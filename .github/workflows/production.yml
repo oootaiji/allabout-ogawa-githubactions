@@ -32,12 +32,12 @@ jobs:
 
       - name: wait for phpunit
         run: |
-          docker
+            docker
       - name: phpunit
         id: phpunit
         run: |
-          if [ ! -d ./test-results ]; then mkdir ./test-results; fi
-          ./vendor/bin/phpunit -d memory_limit=1G --stderr
+            if [ ! -d ./test-results ]; then mkdir ./test-results; fi
+            ./vendor/bin/phpunit -d memory_limit=1G --stderr
         working-directory: src
 
 
@@ -58,12 +58,11 @@ jobs:
         
 
       - name: gcloud auth
-        id: gcloudauth
-        uses: google-github-actions/auth@v1
-        with:
-            create_credentials_file: true
-            workload_identity_provider: 'projects/246684855382/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-            service_account: 'allabout-kubernetes@o-taiji.iam.gserviceaccount.com'
+        run: |
+            echo ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }} > $HOME/allabout-kubernetes-service-account.json
+            cat $HOME/allabout-kubernetes-service-account.json
+            gcloud auth activate-service-account --key-file $HOME/allabout-kubernetes-service-account.json
+            gcloud auth configure-docker us-east1-docker.pkg.dev
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: setup docker buildx
