@@ -1,9 +1,5 @@
 name: production
 on: [push]
-env: 
-    PRO_APP_ENV: ${{ secrets.PRO_APP_ENV }}
-    PRO_APP_KEY: ${{ secrets.PRO_APP_KEY }}
-    GKE_SERVICE_ACCOUNT_KEY: ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}
 
 
 jobs:
@@ -60,7 +56,8 @@ jobs:
         working-directory: src
       - name: build app - laravel env
         run: |
-          echo "${{ env.PRO_APP_KEY }}"
+          echo "export PRO_APP_KEY=${{ secrets.PRO_APP_KEY }}" >> $BASH_ENV
+          source $BASH_ENV
           envsubst < .env.prd > .env
         working-directory: src
       - name: build app - cache composer install
@@ -141,7 +138,7 @@ jobs:
 
       - name: gcloud auth
         run: |
-          echo ${{ env.GKE_SERVICE_ACCOUNT_KEY }} > $HOME/allabout-kubernetes-service-account.json
+          echo ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }} > $HOME/allabout-kubernetes-service-account.json
           gcloud auth activate-service-account --key-file $HOME/allabout-kubernetes-service-account.json
           gcloud auth configure-docker us-east1-docker.pkg.dev
         working-directory: src
@@ -156,9 +153,9 @@ jobs:
         with:
           context: .
           push: true
-          file: cd/${{ env.PRO_APP_ENV }}/php/Dockerfile
+          file: cd/${{ secrets.PRO_APP_ENV }}/php/Dockerfile
           build-args: |
-            APP_ENV=${{ env.PRO_APP_ENV }}
+            APP_ENV=${{ secrets.PRO_APP_ENV }}
             APP_PATH=/var/www/${{ env.GITHUB_ACTION_REPOSITORY }}
           tags: |
             ${{ env.GITHUB_ACTION_REPOSITORY }} us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:latest
@@ -177,7 +174,7 @@ jobs:
           source $BASH_ENV
       - name: deploy gke
         run: |
-          cd cd/${{ env.PRO_APP_ENV }}/manifest
+          cd cd/${{ secrets.PRO_APP_ENV }}/manifest
           envsubst < namespace.yaml > $HOME/namespace.yaml
           envsubst < service.yaml > $HOME/service.yaml
           envsubst < deployment.yaml > $HOME/deployment.yaml
