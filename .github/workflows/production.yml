@@ -1,7 +1,9 @@
 name: production
 on: [push]
 
-
+permissions:
+    contents: read
+    id-token: write
 
 jobs:
   test:
