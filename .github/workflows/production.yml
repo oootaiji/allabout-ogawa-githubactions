@@ -97,24 +97,28 @@ jobs:
             gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
       - name: set gke env
         run: | 
-            echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}" >> $BASH_ENV
-            echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $BASH_ENV
-            echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $BASH_ENV
-            echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $BASH_ENV
-            source $BASH_ENV
+            echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+            echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
+            echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
+            echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
       - name: deploy gke
         run: |
-            envsubst < namespace.yaml > $HOME/namespace.yaml
-            envsubst < service.yaml > $HOME/service.yaml
-            envsubst < deployment.yaml > $HOME/deployment.yaml
-            envsubst < ingress.yaml > $HOME/ingress.yaml
-            envsubst < cert.yaml > $HOME/cert.yaml
-            envsubst < pod-disruption-budget.yaml > $HOME/pod-disruption-budget.yaml
-            kubectl apply -f $HOME/cert.yaml
-            kubectl apply -f $HOME/deployment.yaml
-            kubectl apply -f $HOME/service.yaml
-            kubectl apply -f $HOME/ingress.yaml
-            kubectl apply -f $HOME/pod-disruption-budget.yaml
+            envsubst < namespace.yaml > namespace.yaml
+            envsubst < service.yaml > service.yaml
+            envsubst < deployment.yaml > deployment.yaml
+            envsubst < ingress.yaml > ingress.yaml
+            envsubst < cert.yaml > cert.yaml
+            envsubst < pod-disruption-budget.yaml > pod-disruption-budget.yaml
+            kubectl apply -f cert.yaml
+            kubectl apply -f deployment.yaml
+            kubectl apply -f service.yaml
+            kubectl apply -f ingress.yaml
+            kubectl apply -f pod-disruption-budget.yaml
+        env:
+            DEPLOYMENT_CONTAINER_IMAGE: ${{ env.DEPLOYMENT_CONTAINER_IMAGE }}
+            CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
+            INGRESS_STATIC_IP: ${{ env.INGRESS_STATIC_IP }}
+            NAMESPACE: ${{ env.NAMESPACE }}
         working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
