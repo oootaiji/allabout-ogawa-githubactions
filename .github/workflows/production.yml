@@ -94,7 +94,8 @@ jobs:
         run: |
           if [ ! -d ./test-results ]; then mkdir ./test-results; fi
           ./vendor/bin/phpunit -d memory_limit=1G --stderr
-      
+        working-directory: src
+
 
       - name: build app - cache composer install --no-dev
         id: composer-nodev-cache
