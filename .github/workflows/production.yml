@@ -59,16 +59,9 @@ jobs:
             APP_ENV_NAME: ".env.prd"
             COMPOSER_INSTALL_NO_DEV: "true"
         
-
-      - name: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-            workload_identity_provider: 'projects/246684855382/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-            service_account: 'allabout-kubernetes@o-taiji.iam.gserviceaccount.com'
-            export_default_credentials: true
+    
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
-    
       - name: Authorize Docker push
         run: |
             echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
@@ -90,11 +83,20 @@ jobs:
             tags: |
                 us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:latest
                 us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}
-      - name: set gke config
-        run: |
-            gcloud config set project o-taiji
-            gcloud config set compute/region us-west1
-            gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
+
+
+      - name: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+            workload_identity_provider: 'projects/246684855382/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+            service_account: 'allabout-kubernetes@o-taiji.iam.gserviceaccount.com'
+            export_default_credentials: true
+      - name: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v1'
+        with:
+            cluster_name: ${{ env.REPOSITORY_NAME }}
+            location: us-west1
+
       - name: set gke env
         run: | 
             echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
