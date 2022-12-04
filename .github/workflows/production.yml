@@ -19,9 +19,9 @@ jobs:
           options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
 
     steps:
-      - name: build app - checkout
+      - name: checkout
         uses: actions/checkout@v3
-      - name: build app
+      - name: build app for deploy
         uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
@@ -46,9 +46,9 @@ jobs:
     runs-on: ubuntu-20.04
     needs: test
     steps:
-      - name: build app - checkout
+      - name: checkout
         uses: actions/checkout@v3
-      - name: build app
+      - name: build app for test
         uses: ./.github/actions/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
