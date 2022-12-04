@@ -2,16 +2,10 @@ name: production
 on: [push]
 
 
+
 jobs:
-
-
-
   test:
-
-  
     runs-on: ubuntu-20.04
-
-
     services:
       mysql:
         image: mysql:8.0
@@ -24,10 +18,9 @@ jobs:
           MYSQL_PASSWORD: test
           options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
 
-
     steps:
       - name: build app
-        uses: ./.github/workflows/actions/build.yml
+        uses: ./.github/workflows/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
@@ -46,18 +39,13 @@ jobs:
         working-directory: src
 
 
+
   deploy:
     runs-on: ubuntu-20.04
-
-
     needs: test
-
-
     steps:
-
-
       - name: build app
-        uses: ./.github/workflows/actions/build.yml
+        uses: ./.github/workflows/build
         with:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
