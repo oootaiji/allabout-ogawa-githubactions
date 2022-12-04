@@ -27,7 +27,7 @@ jobs:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
             APP_ENV_NAME: ".env.prd"
-            COMPOSER_INSTALL_NO_DEV: false
+            COMPOSER_INSTALL_NO_DEV: "false"
       
 
       - name: wait for phpunit
@@ -54,7 +54,7 @@ jobs:
             APP_ENV: ${{ secrets.PRO_APP_ENV }}
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
             APP_ENV_NAME: ".env.prd"
-            COMPOSER_INSTALL_NO_DEV: true
+            COMPOSER_INSTALL_NO_DEV: "true"
         
 
       - name: gcloud auth
