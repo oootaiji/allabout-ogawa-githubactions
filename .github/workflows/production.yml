@@ -71,7 +71,8 @@ jobs:
     
       - name: Authorize Docker push
         run: 
-            gcloud auth activate-service-account --key-file $HOME/allabout-kubernetes-service-account.json
+            echo ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }} > allabout-kubernetes-service-account.json
+            gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
             gcloud auth configure-docker us-east1-docker.pkg.dev
       - name: setup docker env
         run: |
@@ -103,7 +104,6 @@ jobs:
             source $BASH_ENV
       - name: deploy gke
         run: |
-            cd cd/${{ secrets.PRO_APP_ENV }}/manifest
             envsubst < namespace.yaml > $HOME/namespace.yaml
             envsubst < service.yaml > $HOME/service.yaml
             envsubst < deployment.yaml > $HOME/deployment.yaml
@@ -115,6 +115,7 @@ jobs:
             kubectl apply -f $HOME/service.yaml
             kubectl apply -f $HOME/ingress.yaml
             kubectl apply -f $HOME/pod-disruption-budget.yaml
+        working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
             kubectl rollout status deployment web
