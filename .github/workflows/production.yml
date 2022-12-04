@@ -65,7 +65,6 @@ jobs:
       - name: Authorize Docker push
         run: |
             echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
-            gcloud components install gke-gcloud-auth-plugin
             gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
             gcloud auth configure-docker us-east1-docker.pkg.dev
       - name: setup docker env
@@ -85,7 +84,7 @@ jobs:
                 us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:latest
                 us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}
 
-
+                
       - name: set gke config
         run: |
             gcloud config set project o-taiji
@@ -97,6 +96,12 @@ jobs:
             echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
             echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
             echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
+      - name: gke-gcloud-auth-plugin
+        run: |
+            gke-gcloud-auth-plugin --version
+            echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
+            gcloud components update
+            gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
       - name: deploy gke
         run: |
             envsubst < namespace.yaml > namespace.yaml
@@ -115,6 +120,7 @@ jobs:
             CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
             INGRESS_STATIC_IP: ${{ env.INGRESS_STATIC_IP }}
             NAMESPACE: ${{ env.NAMESPACE }}
+            USE_GKE_GCLOUD_AUTH_PLUGIN:  ${{ env.USE_GKE_GCLOUD_AUTH_PLUGIN }}
         working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
