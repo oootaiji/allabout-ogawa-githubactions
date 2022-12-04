@@ -10,17 +10,6 @@ jobs:
 
   test:
     runs-on: ubuntu-20.04
-    services:
-      db:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
-          options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
 
 
     steps:
@@ -28,8 +17,8 @@ jobs:
 
       - name: setup - package update
         run: |
-          apt-get update
-          apt-get install -y git gettext
+          sudo apt-get update
+          sudo apt-get install -y git gettext
       - name: setup - install php
         uses: shivammathur/setup-php@v2
         with:
