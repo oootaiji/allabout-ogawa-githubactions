@@ -70,7 +70,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
     
       - name: Authorize Docker push
-        run: 
+        run: |
             echo ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }} > allabout-kubernetes-service-account.json
             gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
             gcloud auth configure-docker us-east1-docker.pkg.dev
