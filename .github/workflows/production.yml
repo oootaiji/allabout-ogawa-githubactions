@@ -160,7 +160,7 @@ jobs:
             APP_PATH=/var/www/${{ env.GITHUB_ACTION_REPOSITORY }}
           tags: |
             ${{ env.GITHUB_ACTION_REPOSITORY }} us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:latest
-            ${{ env.GITHUB_ACTION_REPOSITORY }} us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:${CIRCLE_SHA1}
+            ${{ env.GITHUB_ACTION_REPOSITORY }} us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:${{ env.IMAGE_TAG }}
       - name: set gke config
         run: |
           gcloud config set project o-taiji
@@ -168,7 +168,7 @@ jobs:
           gcloud container clusters get-credentials ${{ env.GITHUB_ACTION_REPOSITORY }}
       - name: set gke env
         run: | 
-          echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:${{ IMAGE_TAG }}" >> $BASH_ENV
+          echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.GITHUB_ACTION_REPOSITORY }}/app:${{ env.IMAGE_TAG }}" >> $BASH_ENV
           echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $BASH_ENV
           echo "export INGRESS_STATIC_IP=${{ env.GITHUB_ACTION_REPOSITORY }}-ip" >> $BASH_ENV
           echo "export NAMESPACE=${{ env.GITHUB_ACTION_REPOSITORY }}" >> $BASH_ENV
