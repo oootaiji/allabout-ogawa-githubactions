@@ -70,7 +70,9 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
     
       - name: Authorize Docker push
-        run: gcloud auth configure-docker
+        run: 
+            gcloud auth activate-service-account --key-file $HOME/allabout-kubernetes-service-account.json
+            gcloud auth configure-docker us-east1-docker.pkg.dev
       - name: setup docker env
         run: |
             echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_ENV
