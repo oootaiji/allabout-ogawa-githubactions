@@ -84,8 +84,8 @@ jobs:
                 APP_ENV=${{ secrets.PRO_APP_ENV }}
                 APP_PATH=/var/www/${{ env.REPOSITORY_NAME }}
             tags: |
-                ${{ env.REPOSITORY_NAME }} us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:latest
-                ${{ env.REPOSITORY_NAME }} us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}
+                us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:latest
+                us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}
       - name: set gke config
         run: |
             gcloud config set project o-taiji
