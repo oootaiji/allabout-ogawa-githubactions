@@ -1,10 +1,11 @@
 name: production
-on: [push]
 
+on: [push]
 
 permissions:
     contents: read
     id-token: write
+
 
 jobs:
   test:
@@ -20,7 +21,6 @@ jobs:
           MYSQL_USER: test
           MYSQL_PASSWORD: test
           options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
-
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -71,7 +71,7 @@ jobs:
     
       - name: Authorize Docker push
         run: |
-            echo "${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}" > allabout-kubernetes-service-account.json
+            echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
             gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
             gcloud auth configure-docker us-east1-docker.pkg.dev
       - name: setup docker env
