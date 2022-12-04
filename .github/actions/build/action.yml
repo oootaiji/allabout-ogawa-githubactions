@@ -64,13 +64,15 @@ runs:
     - name: build app - composer install
       if: ${{ inputs.COMPOSER_INSTALL_NO_DEV }} != "true" && steps.composer-cache.outputs.cache-hit != 'true'
       run: |
+        echo "${{ inputs.COMPOSER_INSTALL_NO_DEV }}"
         composer config discard-changes true
         composer install -n --prefer-dist
       shell: bash
       working-directory: src
     - name: build app - composer install --no-dev
-      if: ${{ inputs.COMPOSER_INSTALL_NO_DEV }} == "true" && steps.composer-cache.outputs.cache-hit != 'true'
+      if: ${{ inputs.COMPOSER_INSTALL_NO_DEV }} == "true"
       run: |
+        echo "${{ inputs.COMPOSER_INSTALL_NO_DEV }}"
         composer config discard-changes true
         composer install -n --prefer-dist --no-dev
       shell: bash
