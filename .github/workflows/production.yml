@@ -10,7 +10,7 @@ jobs:
 
   test:
 
-
+  
     runs-on: ubuntu-20.04
 
 
@@ -68,8 +68,8 @@ jobs:
           key: composer-cache-v1-${{ hashFiles('src/composer.json') }}
           restore-keys: composer-cache-v1-
       - name: build app - composer install
+        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
-          if: steps.composer-cache.outputs.cache-hit != 'true'
           composer config discard-changes true
           composer install -n --prefer-dist
         working-directory: src
@@ -92,7 +92,7 @@ jobs:
       - name: production test
         id: production-test
         run: |
-          mkdir -p ./results
+          if [ ! -d ./test-results ]; then mkdir ./test-results; fi
           ./vendor/bin/phpunit -d memory_limit=1G --stderr
       
 
