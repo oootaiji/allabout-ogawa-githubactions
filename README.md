@@ -168,4 +168,7 @@ https://githubactions.ogawa.allabout.oootaiji.com
 
 ## 参考
 - [Github Actions](https://docs.github.com/ja/actions)
+- [Workflowの書き方一覧](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions)
 - [CircleCIからGithub Actionsへ移行](https://docs.github.com/ja/actions/migrating-to-github-actions/migrating-from-circleci-to-github-actions)
+- [Composite Action](https://zenn.dev/tmrekk/articles/5fef57be891040)
+- [compsiteで環境変数](https://zenn.dev/noraworld/articles/github-actions-env-bug)

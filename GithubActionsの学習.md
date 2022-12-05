@@ -29,6 +29,7 @@ CI/CDサービスのやることは主に以下の３つである
 
 ## CircleCIとGithubActionsの違い
 
+- Github Actionsのほうがシンプルな記述
 - ワークフローをまたいで保存 (cacheへの保存)
 - ジョブをまたいで保存 (artifactへ保存)
 

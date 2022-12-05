@@ -103,16 +103,12 @@ jobs:
 
       - name: deploy gke
         run: |
-            pwd
-            ls -al
             mkdir -p apply
             envsubst < service.yaml > apply/service.yaml
             envsubst < deployment.yaml > apply/deployment.yaml
             envsubst < ingress.yaml > apply/ingress.yaml
             envsubst < cert.yaml > apply/cert.yaml
             envsubst < pod-disruption-budget.yaml > apply/pod-disruption-budget.yaml
-            cat cert.yaml
-            cat apply/cert.yaml
             kubectl apply -f apply/cert.yaml
             kubectl apply -f apply/deployment.yaml
             kubectl apply -f apply/service.yaml
