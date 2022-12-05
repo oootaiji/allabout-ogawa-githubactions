@@ -103,7 +103,7 @@ jobs:
 
       - name: deploy gke
         run: |
-            envsubst < namespace.yaml > namespace.yaml
+            pwd
             envsubst < service.yaml > service.yaml
             envsubst < deployment.yaml > deployment.yaml
             envsubst < ingress.yaml > ingress.yaml
