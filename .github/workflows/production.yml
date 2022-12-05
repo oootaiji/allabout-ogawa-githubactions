@@ -97,6 +97,7 @@ jobs:
       - name: auth gke
         uses: google-github-actions/get-gke-credentials@v1
         with:
+            project_id: o-taiji
             cluster_name: ${{ env.REPOSITORY_NAME }}
             location: us-west1
 
