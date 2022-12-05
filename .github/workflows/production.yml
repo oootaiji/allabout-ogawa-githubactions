@@ -101,6 +101,7 @@ jobs:
             gke-gcloud-auth-plugin --version
             gcloud config set project o-taiji
             gcloud config set compute/region us-west1
+            gcloud components update
             gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
             gcloud --version
             envsubst < namespace.yaml > namespace.yaml
