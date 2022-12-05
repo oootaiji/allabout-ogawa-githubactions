@@ -94,16 +94,14 @@ jobs:
             echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
             echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
             echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
-            echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
+      - name: auth gke
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+            cluster_name: ${{ env.REPOSITORY_NAME }}
+            location: us-west1
+
       - name: deploy gke
         run: |
-            gcloud components install gke-gcloud-auth-plugin
-            gke-gcloud-auth-plugin --version
-            gcloud config set project o-taiji
-            gcloud config set compute/region us-west1
-            gcloud components update
-            gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
-            gcloud --version
             envsubst < namespace.yaml > namespace.yaml
             envsubst < service.yaml > service.yaml
             envsubst < deployment.yaml > deployment.yaml
@@ -120,7 +118,6 @@ jobs:
             CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
             INGRESS_STATIC_IP: ${{ env.INGRESS_STATIC_IP }}
             NAMESPACE: ${{ env.NAMESPACE }}
-            USE_GKE_GCLOUD_AUTH_PLUGIN:  ${{ env.USE_GKE_GCLOUD_AUTH_PLUGIN }}
         working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
