@@ -103,12 +103,17 @@ jobs:
 
       - name: deploy gke
         run: |
+            cd cd/${{ secrets.PRO_APP_ENV }}/manifest
             pwd
             envsubst < service.yaml > service.yaml
             envsubst < deployment.yaml > deployment.yaml
             envsubst < ingress.yaml > ingress.yaml
             envsubst < cert.yaml > cert.yaml
             envsubst < pod-disruption-budget.yaml > pod-disruption-budget.yaml
+            cat cert.yaml
+            cat deployment.yaml
+            cat service.yaml
+            cat pod-disruption-budget.yaml
             kubectl apply -f cert.yaml
             kubectl apply -f deployment.yaml
             kubectl apply -f service.yaml
@@ -118,7 +123,6 @@ jobs:
             DEPLOYMENT_CONTAINER_IMAGE: ${{ env.DEPLOYMENT_CONTAINER_IMAGE }}
             CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
             INGRESS_STATIC_IP: ${{ env.INGRESS_STATIC_IP }}
-        working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
             kubectl rollout status deployment web
