@@ -48,9 +48,7 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
     needs: test
-    if: |
-        contains(github.head_ref, 'release')
-        || github.ref == 'refs/heads/main'
+    if: contains(github.head_ref, 'release') || github.ref == 'refs/heads/main'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -61,8 +59,7 @@ jobs:
             APP_KEY: ${{ secrets.PRO_APP_KEY }}
             APP_ENV_NAME: ".env.prd"
             COMPOSER_INSTALL_NO_DEV: "true"
-        
-    
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
       - name: Authorize Docker push
@@ -70,7 +67,7 @@ jobs:
           echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
           gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
           gcloud auth configure-docker us-east1-docker.pkg.dev
-    - name: setup docker env
+      - name: setup docker env
         run: |
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_ENV
           echo "IMAGE_TAG=${{ github.sha }}-${{ github.run_number }}" >> $GITHUB_ENV
