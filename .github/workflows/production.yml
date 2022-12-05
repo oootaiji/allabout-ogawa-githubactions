@@ -87,10 +87,9 @@ jobs:
                 
       - name: set gke env
         run: | 
-            echo "export DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-            echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
-            echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
-            echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_CONTAINER_IMAGE=us-east1-docker.pkg.dev/o-taiji/${{ env.REPOSITORY_NAME }}/app:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+            echo "CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
+            echo "INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
       - name: auth gke
         uses: google-github-actions/auth@v1
         with:
@@ -119,7 +118,6 @@ jobs:
             DEPLOYMENT_CONTAINER_IMAGE: ${{ env.DEPLOYMENT_CONTAINER_IMAGE }}
             CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
             INGRESS_STATIC_IP: ${{ env.INGRESS_STATIC_IP }}
-            NAMESPACE: ${{ env.NAMESPACE }}
         working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
       - name: confirm deploy
         run: |
