@@ -50,7 +50,7 @@ jobs:
     needs: test
     if: |
         contains(github.head_ref, 'release')
-        || github.ref == 'refs/heads/main'
+        || github.ref == 'refs/heads/mainaa'
     steps:
       - name: checkout
         uses: actions/checkout@v3
