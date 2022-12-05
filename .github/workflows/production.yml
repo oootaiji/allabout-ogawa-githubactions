@@ -96,11 +96,13 @@ jobs:
             echo "export CERT_DOMAIN=githubactions.ogawa.allabout.oootaiji.com" >> $GITHUB_ENV
             echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
             echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
+            echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
       - name: gke-gcloud-auth-plugin
         run: |
-            echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
             gcloud components update
             gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
+        env:
+            USE_GKE_GCLOUD_AUTH_PLUGIN:  ${{ env.USE_GKE_GCLOUD_AUTH_PLUGIN }}
       - name: deploy gke
         run: |
             envsubst < namespace.yaml > namespace.yaml
