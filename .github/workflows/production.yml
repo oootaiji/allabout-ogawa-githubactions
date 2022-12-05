@@ -50,7 +50,7 @@ jobs:
     needs: test
     if: |
         contains(github.head_ref, 'release')
-        || github.ref == 'refs/heads/mainaa'
+        || github.ref == 'refs/heads/main'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -102,6 +102,7 @@ jobs:
             gcloud config set project o-taiji
             gcloud config set compute/region us-west1
             gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
+            gcloud --version
             envsubst < namespace.yaml > namespace.yaml
             envsubst < service.yaml > service.yaml
             envsubst < deployment.yaml > deployment.yaml
