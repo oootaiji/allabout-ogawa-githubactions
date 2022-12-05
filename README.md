@@ -172,3 +172,4 @@ https://githubactions.ogawa.allabout.oootaiji.com
 - [CircleCIからGithub Actionsへ移行](https://docs.github.com/ja/actions/migrating-to-github-actions/migrating-from-circleci-to-github-actions)
 - [Composite Action](https://zenn.dev/tmrekk/articles/5fef57be891040)
 - [compsiteで環境変数](https://zenn.dev/noraworld/articles/github-actions-env-bug)
+- [jsonを使ったgkeの認証](https://githubactions.ogawa.allabout.oootaiji.com/)
