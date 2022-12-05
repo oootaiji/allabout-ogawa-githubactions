@@ -95,6 +95,12 @@ jobs:
             echo "export INGRESS_STATIC_IP=${{ env.REPOSITORY_NAME }}-ip" >> $GITHUB_ENV
             echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
       - name: auth gke
+        uses: google-github-actions/auth@v1
+        with:
+            workload_identity_provider: 'projects/246684855382/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+            service_account: 'allabout-kubernetes@o-taiji.iam.gserviceaccount.com'
+            export_default_credentials: true
+      - name: auth gke
         uses: google-github-actions/get-gke-credentials@v1
         with:
             project_id: o-taiji
