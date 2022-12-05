@@ -98,7 +98,6 @@ jobs:
             echo "export NAMESPACE=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
       - name: gke-gcloud-auth-plugin
         run: |
-            gke-gcloud-auth-plugin --version
             echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
             gcloud components update
             gcloud container clusters get-credentials ${{ env.REPOSITORY_NAME }}
