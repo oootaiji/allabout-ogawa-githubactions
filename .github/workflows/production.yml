@@ -103,22 +103,22 @@ jobs:
 
       - name: deploy gke
         run: |
-            cd cd/${{ secrets.PRO_APP_ENV }}/manifest
             pwd
-            envsubst < service.yaml > service.yaml
-            envsubst < deployment.yaml > deployment.yaml
-            envsubst < ingress.yaml > ingress.yaml
-            envsubst < cert.yaml > cert.yaml
-            envsubst < pod-disruption-budget.yaml > pod-disruption-budget.yaml
+            ls -al
+            mkdir -p apply
+            envsubst < service.yaml > apply/service.yaml
+            envsubst < deployment.yaml > apply/deployment.yaml
+            envsubst < ingress.yaml > apply/ingress.yaml
+            envsubst < cert.yaml > apply/cert.yaml
+            envsubst < pod-disruption-budget.yaml > apply/pod-disruption-budget.yaml
             cat cert.yaml
-            cat deployment.yaml
-            cat service.yaml
-            cat pod-disruption-budget.yaml
-            kubectl apply -f cert.yaml
-            kubectl apply -f deployment.yaml
-            kubectl apply -f service.yaml
-            kubectl apply -f ingress.yaml
-            kubectl apply -f pod-disruption-budget.yaml
+            cat apply/cert.yaml
+            kubectl apply -f apply/cert.yaml
+            kubectl apply -f apply/deployment.yaml
+            kubectl apply -f apply/service.yaml
+            kubectl apply -f apply/ingress.yaml
+            kubectl apply -f apply/pod-disruption-budget.yaml
+        working-directory: cd/${{ secrets.PRO_APP_ENV }}/manifest
         env:
             DEPLOYMENT_CONTAINER_IMAGE: ${{ env.DEPLOYMENT_CONTAINER_IMAGE }}
             CERT_DOMAIN: ${{ env.CERT_DOMAIN }}
