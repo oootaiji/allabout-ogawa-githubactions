@@ -67,13 +67,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
       - name: Authorize Docker push
         run: |
-            echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
-            gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
-            gcloud auth configure-docker us-east1-docker.pkg.dev
-      - name: setup docker env
+          echo '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}' > allabout-kubernetes-service-account.json
+          gcloud auth activate-service-account --key-file allabout-kubernetes-service-account.json
+          gcloud auth configure-docker us-east1-docker.pkg.dev
+    - name: setup docker env
         run: |
-            echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_ENV
-            echo "IMAGE_TAG=${{ github.sha }}-${{ github.run_number }}" >> $GITHUB_ENV
+          echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ github.sha }}-${{ github.run_number }}" >> $GITHUB_ENV
       - name: docker build and push
         uses: docker/build-push-action@v3.2.0
         with:
@@ -97,14 +97,15 @@ jobs:
       - name: auth gke
         uses: google-github-actions/auth@v1
         with:
-            project_id: o-taiji
             workload_identity_provider: 'projects/246684855382/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-            service_account: 'allabout-kubernetes@o-taiji.iam.gserviceaccount.com'
+            service_account: '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}'
       - name: auth gke
         uses: google-github-actions/get-gke-credentials@v1
         with:
             cluster_name: ${{ env.REPOSITORY_NAME }}
             location: us-west1
+            credentials: '${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}'
+
 
       - name: deploy gke
         run: |
